@@ -20,20 +20,31 @@ class PlacesListScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<PlacesProvider>(
-        child: Center(child: Text("NO PLACES YET! ADD SOME!")), //static child
-        builder: (context, placesData, child) => placesData.places.isEmpty
-            ? child as Widget
-            : ListView.builder(
-                itemCount: placesData.places.length,
-                itemBuilder: (context, idx) => ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: FileImage(placesData.places[idx].image),
+      body: FutureBuilder(
+        future: Provider.of<PlacesProvider>(context, listen: false).fetchPlaces(),
+        builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Consumer<PlacesProvider>(
+                    child: Center(
+                        child: Text("NO PLACES YET! ADD SOME!")), //static child
+                    builder: (context, placesData, child) =>
+                        placesData.places.isEmpty
+                            ? child as Widget
+                            : ListView.builder(
+                                itemCount: placesData.places.length,
+                                itemBuilder: (context, idx) => ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage:
+                                        FileImage(placesData.places[idx].image),
+                                  ),
+                                  title: Text(placesData.places[idx].title),
+                                  onTap: () {},
+                                ),
+                              ),
                   ),
-                  title: Text(placesData.places[idx].title),
-                  onTap: (){},
-                ),
-              ),
       ),
       // Center(child: CircularProgressIndicator()),
     );

@@ -21,13 +21,13 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     if (_titleController.text.isEmpty || _pickedImage == null) {
       return;
     }
+    final placesData = Provider.of<PlacesProvider>(context, listen: false);
+    placesData.addPlace(_titleController.text, _pickedImage as File);
     Navigator.of(context).pop();
   }
 
   void _selectImage(File pickedImage) {
     _pickedImage = pickedImage;
-    final placesData = Provider.of<PlacesProvider>(context, listen: false);
-    placesData..addPlace(_titleController.text, pickedImage);
   }
 
   @override
