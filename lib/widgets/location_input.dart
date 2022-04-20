@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:great_places/helpers/location_helper.dart';
+import 'package:great_places/screens/map_screen.dart';
 import 'package:location/location.dart';
+import 'package:path/path.dart';
 
 class LocationInput extends StatefulWidget {
   const LocationInput({Key? key}) : super(key: key);
@@ -24,13 +29,25 @@ class _LocationInputState extends State<LocationInput> {
     });
   }
 
+  Future<void> _selectOnMap(BuildContext context) async {
+    final selectedLocation = await Navigator.of(context).push<LatLng>(
+      MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => MapScreen(
+                isSelecting: true,
+              )),
+    );
+    if (selectedLocation == null) return;
+    print("selected $selectedLocation");
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        Container( 
+        Container(
           height: height * 0.3,
           width: double.infinity,
           decoration: BoxDecoration(border: Border.all(color: Colors.black)),
@@ -50,7 +67,9 @@ class _LocationInputState extends State<LocationInput> {
                 icon: Icon(Icons.location_on),
                 label: Text('CURRENT LOCATION')),
             TextButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  _selectOnMap(context);
+                },
                 icon: Icon(Icons.map),
                 label: Text('SELECT ON MAP')),
           ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const GOOGLE_API_KEY = '';
+const GOOGLE_API_KEY = ' ';
 
 class LocationHelper {
   static String getLocationPreviewImg(
