@@ -28,17 +28,21 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('YOUR MAP'), actions: [
-        IconButton(
-          icon: Icon(Icons.check),
-          onPressed: () {
-            Navigator.of(context).pop(_selectedLocation);
-          },
-        )
+        if (widget.isSelecting)
+          IconButton(
+            icon: Icon(Icons.check),
+            onPressed: _selectedLocation == null
+                ? () {}
+                : () {
+                    Navigator.of(context).pop(_selectedLocation);
+                  },
+          )
       ]),
       body: GoogleMap(
           initialCameraPosition: CameraPosition(
             target: LatLng(widget.initialLocation.latitude,
                 widget.initialLocation.latitude),
+            zoom: 17,
           ),
           onTap: widget.isSelecting ? _selectLocation : null,
           markers: _selectedLocation == null
